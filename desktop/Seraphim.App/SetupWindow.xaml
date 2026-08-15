@@ -32,6 +32,9 @@
                            TextAlignment="Center" Margin="0,0,0,20" />
                 <ProgressBar x:Name="Bar" Height="6" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,0,16" />
                 <Button x:Name="ActionBtn" Padding="20,10" HorizontalAlignment="Center" Click="OnAction" />
+                <Button x:Name="SkipBtn" Padding="12,8" Margin="0,12,0,0" HorizontalAlignment="Center"
+                        Background="Transparent" BorderThickness="0" Foreground="#FF94A3B8"
+                        Cursor="Hand" Click="OnSkip" />
             </StackPanel>
         </Border>
     </Grid>

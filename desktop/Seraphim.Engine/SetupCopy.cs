@@ -12,9 +12,11 @@ public static class SetupCopy
     public const string Finishing = "Finishing up…";
     public const string Done = "Seraphim is installed.";
     public const string Open = "Open Seraphim";
+    public const string Skip = "Open Seraphim anyway";
+    public const string SkipHint = "You can open the workbench now. Some tools may not be ready yet.";
     public const string RebootHint = "Windows may restart to finish. Open Seraphim after that.";
     public const string Permission = "Windows needs permission to install Seraphim.";
-    public const string Failed = "Setup didn't finish. Try Install Seraphim again.";
+    public const string Failed = "Setup didn't finish. Try Install Seraphim again, or open the workbench anyway.";
     public const string MissingTool = "{0} isn't ready yet. We didn't invent a result.";
     public const string ScanFallback = "This scan isn't ready yet. Checking common ports the built-in way.";
     public const string InsideOff = "  AI: Off";
@@ -32,7 +34,7 @@ public static class SetupCopy
     public static IEnumerable<string> UserVisible =>
     [
         WindowTitle, Headline, Blurb, Action, Installing, Preparing, Lab, Finishing,
-        Done, Open, RebootHint, Permission, Failed, MissingTool, ScanFallback,
+        Done, Open, Skip, SkipHint, RebootHint, Permission, Failed, MissingTool, ScanFallback,
         InsideOff, InsideOn, InsideDown,
         AuthorizedUse.Headline, AuthorizedUse.Terms, AuthorizedUse.Check,
         AuthorizedUse.Continue, AuthorizedUse.Decline,

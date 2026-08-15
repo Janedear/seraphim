@@ -18,6 +18,15 @@ public class SetupCopyTests
     }
 
     [Fact]
+    public void Skip_lets_them_open_the_workbench()
+    {
+        Assert.Equal("Open Seraphim anyway", SetupCopy.Skip);
+        Assert.Contains(SetupCopy.Skip, SetupCopy.UserVisible);
+        Assert.Contains(SetupCopy.SkipHint, SetupCopy.UserVisible);
+        Assert.DoesNotContain("install", SetupCopy.Skip, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void Red_is_signal_red_not_maroon()
     {
         Assert.Equal("#FF2A2A", Accent.For(Team.Red).Hex);

@@ -31,6 +31,7 @@ public class DemoTreeTests
         Assert.Contains("127.0.0.1", demo);
         Assert.Contains("quarry/", demo);
         Assert.Contains("Do not invent a scan", demo);
+        Assert.Contains("Open Seraphim anyway", demo);
     }
 
     private static string RepoRoot()

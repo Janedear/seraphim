@@ -21,6 +21,7 @@ public partial class SetupWindow : Window
         Headline.Text = SetupCopy.Headline;
         Blurb.Text = SetupCopy.Blurb;
         ActionBtn.Content = SetupCopy.Action;
+        SkipBtn.Content = SetupCopy.Skip;
         Loaded += async (_, _) =>
         {
             if (_autoStart)
@@ -36,6 +37,13 @@ public partial class SetupWindow : Window
             return;
         }
         await RunSetup();
+    }
+
+    private void OnSkip(object sender, RoutedEventArgs e)
+    {
+        if (_busy) return;
+        ToolboxSetup.MarkComplete();
+        OpenApp();
     }
 
     private async Task RunSetup()
@@ -56,6 +64,7 @@ public partial class SetupWindow : Window
 
         _busy = true;
         ActionBtn.IsEnabled = false;
+        SkipBtn.Visibility = Visibility.Collapsed;
         Bar.Visibility = Visibility.Visible;
         Headline.Text = SetupCopy.Installing;
         Blurb.Text = SetupCopy.Preparing;
@@ -122,6 +131,7 @@ public partial class SetupWindow : Window
         Blurb.Text = _reboot ? SetupCopy.RebootHint : SetupCopy.Blurb;
         ActionBtn.Content = SetupCopy.Open;
         ActionBtn.IsEnabled = true;
+        SkipBtn.Visibility = Visibility.Collapsed;
     }
 
     private void Fail()
@@ -132,6 +142,8 @@ public partial class SetupWindow : Window
         Blurb.Text = SetupCopy.Failed;
         ActionBtn.Content = SetupCopy.Action;
         ActionBtn.IsEnabled = true;
+        SkipBtn.Content = SetupCopy.Skip;
+        SkipBtn.Visibility = Visibility.Visible;
     }
 
     private void OpenApp()
@@ -146,7 +158,9 @@ public partial class SetupWindow : Window
                 return;
             }
         }
-        new MainWindow().Show();
+        var main = new MainWindow();
+        Application.Current.MainWindow = main;
+        main.Show();
         Close();
     }
 
@@ -158,6 +172,7 @@ public partial class SetupWindow : Window
             if (string.IsNullOrEmpty(exe))
             {
                 Blurb.Text = SetupCopy.Permission;
+                SkipBtn.Visibility = Visibility.Visible;
                 return;
             }
             Process.Start(new ProcessStartInfo(exe)
@@ -171,6 +186,7 @@ public partial class SetupWindow : Window
         catch
         {
             Blurb.Text = SetupCopy.Permission;
+            SkipBtn.Visibility = Visibility.Visible;
         }
     }
 
