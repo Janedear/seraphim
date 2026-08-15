@@ -55,6 +55,8 @@
                         <TextBlock Text="SERAPHIM" FontWeight="Bold" FontSize="14" Foreground="#FFE2E8F0" />
                          <TextBlock x:Name="CatalogChip" Text="" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0" />
                          <TextBlock x:Name="AiChip" Text="  AI: checking…" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0" />
+                         <Button x:Name="UpdateBtn" Content="Update" Padding="10,4" Margin="12,0,0,0" Visibility="Collapsed"
+                                 Click="OnUpdate" ToolTip="A newer Seraphim is on GitHub" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="TermBtn" Content="TERMINAL" Click="OnTerminal" Padding="14,6" Margin="0,0,8,0"

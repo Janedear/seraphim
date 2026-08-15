@@ -111,5 +111,10 @@ public class ToolLocatorTests
         Assert.Contains("DONE", text);
         Assert.Contains("llama3.1:8b", text);
         Assert.DoesNotContain("llama3.2:1b", text);
+        Assert.Contains("nuclei", text);
+        Assert.Contains("rustscan", text);
+        Assert.Contains("seclists", text);
+        Assert.Contains("netexec", text);
+        Assert.Contains("evil-winrm", text);
     }
 }

@@ -30,13 +30,29 @@ public class InstallerTests
     }
 
     [Fact]
-    public void Pack_script_says_the_zip_is_unsigned()
+    public void Sign_script_only_signs_with_a_real_pfx()
+    {
+        var text = Read("Sign-Seraphim.ps1");
+        Assert.Contains("SERAPHIM_PFX", text);
+        Assert.Contains("signtool", text);
+        Assert.Contains("Leaving unsigned", text);
+        Assert.DoesNotContain("makecert", text, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("New-SelfSignedCertificate", text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void Pack_script_says_the_zip_is_unsigned_without_a_cert()
     {
         var text = Read("Pack-Seraphim.ps1");
         Assert.Contains("Unsigned zip", text);
         Assert.Contains("SmartScreen", text);
-        Assert.DoesNotContain("signtool", text, StringComparison.OrdinalIgnoreCase);
-        Assert.DoesNotContain("Authenticode", text, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Sign-Seraphim.ps1", text);
+        Assert.Contains("AppVersion.cs", text);
+        var signAt = text.IndexOf("Sign-Seraphim.ps1", StringComparison.Ordinal);
+        var zipAt = text.IndexOf("Compress-Archive", StringComparison.Ordinal);
+        Assert.True(signAt >= 0 && zipAt > signAt, "sign the exe before the zip");
+        Assert.DoesNotContain("makecert", text, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("New-SelfSignedCertificate", text, StringComparison.OrdinalIgnoreCase);
     }
 
     private static string Read(string name)

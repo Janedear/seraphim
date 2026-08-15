@@ -1,6 +1,6 @@
 # 12-minute demo
 
-Product is `desktop/`. Do not open `quarry/`.
+Product is `desktop/`.
 
 Authorized use only. Demo on this PC or a lab you have written permission to test.
 
@@ -10,8 +10,8 @@ Authorized use only. Demo on this PC or a lab you have written permission to tes
 2. If Setup asks for Windows permission and you decline, click **Open Seraphim anyway**.
 3. Confirm Blue lands on **Forensics**, Red on **Exploitation Tools**. Exploitation is still in the Blue list.
 4. Confirm **TERMINAL** opens a Kali shell (or an honest missing-tool line).
-4. Confirm the AI chip: `AI: Inside · nothing leaves`.
-5. Confirm nmap (or the built-in TCP check) can run against `127.0.0.1`.
+5. Confirm the AI chip: `AI: Inside · nothing leaves`.
+6. Confirm nmap (or the built-in TCP check) can run against `127.0.0.1`.
 
 ## Script
 
@@ -34,7 +34,7 @@ Prompt: `quick look at 127.0.0.1`. Send Inside.
 Working… then a proposal. Form fills. Auto-run uses the same path as Run.
 
 **Minute 11–12 — What you will not do**  
-Do not open `quarry/`. Do not lead with BYO. Do not claim a signed installer. SmartScreen may warn; we do not fake a signature.
+Do not lead with BYO. Do not claim a signed installer. SmartScreen may warn; we do not fake a signature.
 
 ## If something is missing
 

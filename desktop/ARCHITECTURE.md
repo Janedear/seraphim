@@ -1,6 +1,6 @@
 # Seraphim architecture
 
-Native Windows workbench. Product code lives in this folder. Retired React prototype is `../quarry/` — do not demo it.
+Native Windows workbench. Product code lives in this folder.
 
 ## Pieces
 
@@ -37,4 +37,4 @@ Native Windows workbench. Product code lives in this folder. Retired React proto
 
 `%LocalAppData%\Seraphim\` — team, authorized flag, findings SQLite.
 
-Install (unsigned): `Pack-Seraphim.ps1` then `dist\Install-Seraphim.ps1` copies to `%LocalAppData%\Programs\Seraphim` and adds Start Menu + Desktop shortcuts. SmartScreen may warn. We do not fake a signature. Uninstall: `Uninstall-Seraphim.ps1`.
+Install: `Pack-Seraphim.ps1` then `dist\Install-Seraphim.ps1`. Optional Authenticode: set `SERAPHIM_PFX` to a real PFX before packing. No cert → unsigned; SmartScreen may warn. We do not fake a signature. Uninstall: `Uninstall-Seraphim.ps1`. Updates: caption button opens GitHub Releases when a newer tag exists. Crashes: `%LocalAppData%\Seraphim\crash.log`.

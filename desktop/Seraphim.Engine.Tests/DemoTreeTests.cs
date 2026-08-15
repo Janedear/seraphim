@@ -15,8 +15,7 @@ public class DemoTreeTests
         Assert.False(Directory.Exists(Path.Combine(root, "functions")), "retired functions still at root");
         Assert.False(File.Exists(Path.Combine(root, "package.json")), "Vite package.json still at root");
         Assert.False(File.Exists(Path.Combine(root, "vite.config.js")));
-        Assert.True(Directory.Exists(Path.Combine(root, "quarry")));
-        Assert.True(File.Exists(Path.Combine(root, "quarry", "README.md")));
+        Assert.False(Directory.Exists(Path.Combine(root, "quarry")), "retired SPA still in this folder");
         Assert.True(File.Exists(Path.Combine(root, "desktop", "DEMO.md")));
     }
 
@@ -28,7 +27,6 @@ public class DemoTreeTests
         Assert.Contains("Forensics", demo);
         Assert.Contains("Exploitation Tools", demo);
         Assert.Contains("127.0.0.1", demo);
-        Assert.Contains("quarry/", demo);
         Assert.Contains("Do not invent a scan", demo);
         Assert.Contains("Open Seraphim anyway", demo);
         Assert.Contains("TERMINAL", demo);

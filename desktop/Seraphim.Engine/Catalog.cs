@@ -42,6 +42,17 @@ public static class Catalog
         "bash", "kali-shell",
     };
 
+    public static IReadOnlyList<string> CoreForty { get; } =
+    [
+        "kali-shell", "nmap", "sqlmap", "gobuster", "hydra", "nikto", "nuclei",
+        "masscan", "rustscan", "theharvester", "amass", "enum4linux", "smbmap",
+        "ffuf", "feroxbuster", "wpscan", "dirb", "john", "hashcat", "medusa",
+        "aircrack-ng", "wifite", "searchsploit", "msfconsole", "bettercap",
+        "responder", "tcpdump", "tshark", "wireshark", "binwalk", "volatility3",
+        "radare2", "gdb", "lynis", "whatweb", "netexec", "evil-winrm",
+        "ncat", "smbclient", "httpx-toolkit",
+    ];
+
     public static IReadOnlyList<ToolSpec> Tools { get; } = StampSides(KaliCatalog.All());
 
     public static IReadOnlyList<string> CategoriesFor(Team team) =>

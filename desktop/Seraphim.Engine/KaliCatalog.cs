@@ -130,10 +130,20 @@ internal static class KaliCatalog
                 Fields.Url(),
                 Fields.Wordlist(),
                 Fields.Threads(),
-                Fields.Text("extensions", "File types to try", "-x", "e.g. php, html, txt"),
+                Fields.Text("extensions", "File types to try", "-x", "php,html,txt"),
+                Fields.Text("status", "Status codes to treat as hits", "-s", "200,204,301,302,307,401,403"),
+                Fields.Text("timeout", "Timeout", "--timeout", "10s"),
                 Fields.Flag("follow", "Follow send-aways (redirects)", "-r"),
+                Fields.Flag("insecure", "Skip TLS verify", "-k"),
+                Fields.Flag("noProgress", "Quiet progress", "-q"),
             ],
-            Prefix: ["dir"]));
+            Prefix: ["dir"],
+            Presets:
+            [
+                new("Common dirs", new Dictionary<string, string> { ["wordlist"] = "/usr/share/wordlists/dirb/common.txt" }),
+                new("PHP", new Dictionary<string, string> { ["extensions"] = "php", ["follow"] = "true" }),
+                new("TLS skip", new Dictionary<string, string> { ["insecure"] = "true", ["status"] = "200,301,302,401,403" }),
+            ]));
 
         tools.Add(new ToolSpec(
             "hydra", "Hydra", "Password Attacks", "hydra",
@@ -141,9 +151,18 @@ internal static class KaliCatalog
             [
                 Fields.Target("What to log into", "e.g. ssh://10.0.0.1"),
                 Fields.Text("user", "Username", "-l", "admin"),
+                Fields.Text("userFile", "Username file", "-L", "users.txt"),
                 Fields.Wordlist("-P"),
+                Fields.Text("port", "Port", "-s", "22"),
                 Fields.Threads("-t"),
+                Fields.Flag("ssl", "SSL", "-S"),
+                Fields.Flag("stopFirst", "Stop on first hit", "-f"),
                 Fields.Flag("verbose", "Show extra detail", "-V"),
+            ],
+            [
+                new("SSH", new Dictionary<string, string> { ["target"] = "ssh://10.0.0.1", ["port"] = "22" }),
+                new("HTTPS form", new Dictionary<string, string> { ["ssl"] = "true", ["port"] = "443" }),
+                new("Stop on hit", new Dictionary<string, string> { ["stopFirst"] = "true", ["verbose"] = "true" }),
             ]));
 
         tools.Add(new ToolSpec(

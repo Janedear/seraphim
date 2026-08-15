@@ -798,5 +798,151 @@ internal static class KaliSpecials
                 new("Batch", new Dictionary<string, string> { ["batch"] = "true", ["quiet"] = "true" }),
                 new("No init", new Dictionary<string, string> { ["quiet"] = "true", ["nx"] = "true" }),
             ]));
+
+        tools.Add(new ToolSpec(
+            "netexec", "NetExec", "Exploitation Tools", "nxc",
+            "SMB/LDAP/WinRM situational awareness (CrackMapExec successor).",
+            [
+                new("proto", "Protocol", FieldKind.Select, "", Required: true, Default: "smb", Options: ["smb", "winrm", "ldap", "mssql", "rdp", "ssh", "ftp", "wmi"], Positional: true),
+                Fields.Target(),
+                Fields.Text("user", "User", "-u", "Administrator"),
+                Fields.Text("password", "Password", "-p", ""),
+                Fields.Text("hash", "NTLM hash", "-H", ""),
+                Fields.Flag("shares", "List shares", "--shares"),
+                Fields.Flag("users", "List users", "--users"),
+                Fields.Flag("sam", "SAM dump", "--sam"),
+                Fields.Flag("lsa", "LSA dump", "--lsa"),
+                Fields.Flag("continueOnSuccess", "Continue on success", "--continue-on-success"),
+            ],
+            [
+                new("SMB shares", new Dictionary<string, string> { ["proto"] = "smb", ["shares"] = "true" }),
+                new("SMB users", new Dictionary<string, string> { ["proto"] = "smb", ["users"] = "true" }),
+                new("WinRM", new Dictionary<string, string> { ["proto"] = "winrm" }),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "evil-winrm", "evil-winrm", "Post Exploitation", "evil-winrm",
+            "WinRM shell for Windows pentests.",
+            [
+                new("ip", "Host", FieldKind.Text, "-i", Required: true, Placeholder: "10.0.0.1"),
+                Fields.Text("user", "User", "-u", "Administrator"),
+                Fields.Text("password", "Password", "-p", ""),
+                Fields.Text("hash", "NTLM hash", "-H", ""),
+                Fields.Text("realm", "Realm", "-r", "LAB.LOCAL"),
+                Fields.Flag("ssl", "SSL", "-S"),
+                Fields.Text("port", "Port", "-P", "5985"),
+                Fields.Text("scripts", "Scripts path", "-s", "/usr/share/evil-winrm"),
+            ],
+            [
+                new("Password", new Dictionary<string, string> { ["port"] = "5985" }),
+                new("SSL", new Dictionary<string, string> { ["ssl"] = "true", ["port"] = "5986" }),
+                new("Hash", new Dictionary<string, string> { ["port"] = "5985" }),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "ncat", "Ncat", "Information Gathering", "ncat",
+            "Nmap's netcat with SSL and proxies.",
+            [
+                Fields.Target(),
+                new("port", "Port", FieldKind.Text, "", Default: "443", Placeholder: "443", Positional: true),
+                Fields.Flag("listen", "Listen", "-l"),
+                Fields.Flag("keepOpen", "Keep open", "-k"),
+                Fields.Flag("verbose", "Verbose", "-v"),
+                Fields.Flag("ssl", "SSL", "--ssl"),
+                Fields.Text("sourcePort", "Source port", "-p", ""),
+                Fields.Text("proxy", "Proxy", "--proxy", ""),
+                Fields.Flag("udp", "UDP", "-u"),
+            ],
+            [
+                new("Connect", new Dictionary<string, string> { ["port"] = "443" }),
+                new("Listen", new Dictionary<string, string> { ["listen"] = "true", ["port"] = "443", ["verbose"] = "true" }),
+                new("SSL", new Dictionary<string, string> { ["ssl"] = "true", ["port"] = "443" }),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "smbclient", "smbclient", "Information Gathering", "smbclient",
+            "SMB/CIFS client.",
+            [
+                new("service", "Share", FieldKind.Text, "", Required: true, Default: "//10.0.0.1/C$", Placeholder: "//10.0.0.1/C$", Positional: true),
+                Fields.Text("user", "User", "-U", "guest"),
+                Fields.Flag("list", "List shares (-L)", "-L"),
+                Fields.Text("directory", "Start directory", "-D", ""),
+                Fields.Text("command", "Command", "-c", "ls"),
+                Fields.Flag("noPass", "No password prompt", "-N"),
+                Fields.Verbose(),
+            ],
+            [
+                new("List shares", new Dictionary<string, string> { ["list"] = "true", ["service"] = "//10.0.0.1", ["noPass"] = "true" }),
+                new("Guest C$", new Dictionary<string, string> { ["service"] = "//10.0.0.1/C$", ["user"] = "guest", ["noPass"] = "true" }),
+                new("ls", new Dictionary<string, string> { ["command"] = "ls" }),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "setoolkit", "SET", "Social Engineering Tools", "setoolkit",
+            "Social-Engineer Toolkit. Interactive.",
+            [
+                new("note", "Login and pick the attack from SET", FieldKind.Text, "", Placeholder: "interactive"),
+            ],
+            [
+                new("Interactive", new Dictionary<string, string>()),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "naabu", "naabu", "Information Gathering", "naabu",
+            "Fast port scanner (ProjectDiscovery).",
+            [
+                new("host", "Host", FieldKind.Text, "-host", Required: true, Placeholder: "10.0.0.1"),
+                Fields.Text("list", "Host list", "-list", "hosts.txt"),
+                Fields.Text("p", "Ports", "-p", "80,443,8080"),
+                Fields.Flag("topPorts", "Top ports", "-top-ports"),
+                Fields.Flag("json", "JSON", "-json"),
+                Fields.Flag("silent", "Silent", "-silent"),
+                Fields.Text("rate", "Rate", "-rate", "1000"),
+                Fields.Verbose(),
+            ],
+            [
+                new("Top ports", new Dictionary<string, string> { ["topPorts"] = "true", ["silent"] = "true" }),
+                new("Web", new Dictionary<string, string> { ["p"] = "80,443,8080,8443", ["silent"] = "true" }),
+                new("JSON", new Dictionary<string, string> { ["topPorts"] = "true", ["json"] = "true" }),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "httpx-toolkit", "httpx-toolkit", "Web Application Analysis", "httpx-toolkit",
+            "Probe HTTP hosts (ProjectDiscovery httpx).",
+            [
+                Fields.Url("-u"),
+                Fields.Text("list", "URL list", "-l", "urls.txt"),
+                Fields.Flag("statusCode", "Status code", "-status-code"),
+                Fields.Flag("title", "Title", "-title"),
+                Fields.Flag("techDetect", "Tech detect", "-tech-detect"),
+                Fields.Flag("webServer", "Web server", "-web-server"),
+                Fields.Flag("silent", "Silent", "-silent"),
+                Fields.Threads("-t"),
+                Fields.Text("ports", "Ports", "-ports", "80,443"),
+            ],
+            [
+                new("Silent probe", new Dictionary<string, string> { ["silent"] = "true", ["statusCode"] = "true" }),
+                new("Tech", new Dictionary<string, string> { ["silent"] = "true", ["techDetect"] = "true", ["title"] = "true" }),
+                new("Web ports", new Dictionary<string, string> { ["ports"] = "80,443,8080,8443", ["statusCode"] = "true" }),
+            ]));
+
+        tools.Add(new ToolSpec(
+            "impacket-secretsdump", "impacket secretsdump", "Post Exploitation", "impacket-secretsdump",
+            "DCSync / NTDS / SAM dump (Impacket).",
+            [
+                new("target", "Target", FieldKind.Text, "", Required: true, Placeholder: "domain/user:pass@10.0.0.1", Positional: true),
+                Fields.Flag("justDcNtlm", "Just DC NTLM", "--just-dc-ntlm"),
+                Fields.Flag("justDc", "Just DC", "--just-dc"),
+                Fields.Text("hashes", "LM:NT hashes", "-hashes", ""),
+                Fields.Text("dcIp", "DC IP", "-dc-ip", "10.0.0.1"),
+                Fields.Text("outputfile", "Output prefix", "-outputfile", "secrets"),
+                Fields.Flag("sam", "Local SAM", "-sam"),
+                Fields.Flag("ntds", "NTDS", "-ntds"),
+            ],
+            [
+                new("DCSync NTLM", new Dictionary<string, string> { ["justDcNtlm"] = "true" }),
+                new("DCSync", new Dictionary<string, string> { ["justDc"] = "true" }),
+                new("Local SAM", new Dictionary<string, string> { ["sam"] = "true" }),
+            ]));
     }
 }

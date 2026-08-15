@@ -6,8 +6,6 @@ Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, and an on-
 
 **The product is `desktop/`** — `Seraphim.sln` (WPF app + engine + tests).
 
-`quarry/` is a retired React prototype. Do not demo it. Do not evolve it.
-
 ## What it is
 
 - **Catalog** — 771 tools with forms. Blue and Red change start category and chrome. The full Kali menu is always there.
@@ -48,7 +46,11 @@ cd desktop
 
 That copies the workbench to `%LocalAppData%\Programs\Seraphim` and adds Start Menu + Desktop shortcuts. Uninstall: `.\dist\Uninstall-Seraphim.ps1` (or the copy under Programs\Seraphim).
 
-The zip and exe are **unsigned**. SmartScreen may warn. We do not fake a signature.
+The zip and exe are **unsigned** unless you set `SERAPHIM_PFX` (and optional `SERAPHIM_PFX_PASSWORD`) to a real Authenticode certificate before `Pack-Seraphim.ps1`. We do not generate or fake a signature. SmartScreen may warn until that cert exists.
+
+The caption **Update** button appears if GitHub has a newer release. Crashes append to `%LocalAppData%\Seraphim\crash.log`. Nothing is sent off this PC.
+
+Tag `v0.1.0` (or later) and push the tag to cut a GitHub Release zip. CI packs it. Still unsigned unless `SERAPHIM_PFX` is in the pack environment.
 
 CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: `desktop/ARCHITECTURE.md`. Demo: `desktop/DEMO.md`.
 
@@ -60,7 +62,6 @@ CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: 
 | `desktop/Seraphim.App` | WPF shell |
 | `desktop/Seraphim.Engine.Tests` | xUnit |
 | `desktop/DEMO.md` | 12-minute investor demo script |
-| `quarry/` | Retired React prototype. Not the product. |
 
 ## Tests
 

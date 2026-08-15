@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ public partial class MainWindow : Window
     private readonly Dictionary<string, FrameworkElement> _inputs = new();
     private bool _applyingPreset;
     private PtySession? _live;
+    private string _updateUrl = AppVersion.ReleasesHtml;
 
     public MainWindow()
     {
@@ -35,8 +37,27 @@ public partial class MainWindow : Window
         {
             _insideUp = await _inside.EnsureAsync();
             AiChip.Text = _insideUp ? SetupCopy.InsideOn : SetupCopy.InsideOff;
+            try
+            {
+                var info = await UpdateCheck.QueryAsync();
+                if (info.Available && UpdateBtn is not null)
+                {
+                    _updateUrl = info.Url;
+                    UpdateBtn.Content = $"Update {info.Latest}";
+                    UpdateBtn.Visibility = Visibility.Visible;
+                }
+            }
+            catch
+            {
+                // offline is fine
+            }
         };
         Closed += (_, _) => StopLive();
+    }
+
+    private void OnUpdate(object sender, RoutedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo(_updateUrl) { UseShellExecute = true });
     }
 
     private async void OnTerminal(object sender, RoutedEventArgs e)

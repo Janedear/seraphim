@@ -117,4 +117,19 @@ public class CatalogTests
         Assert.False(Catalog.ById("nmap")!.Interactive);
         Assert.False(Catalog.ById("sqlmap")!.Interactive);
     }
+
+    [Fact]
+    public void Core_forty_have_operator_forms()
+    {
+        Assert.Equal(40, Catalog.CoreForty.Count);
+        Assert.Equal(40, Catalog.CoreForty.Distinct(StringComparer.OrdinalIgnoreCase).Count());
+        foreach (var id in Catalog.CoreForty)
+        {
+            var spec = Catalog.ById(id);
+            Assert.NotNull(spec);
+            Assert.True(spec!.Fields.Count >= 1, id);
+            if (!spec.Interactive)
+                Assert.True(spec.Fields.Count >= 6, $"{id} has {spec.Fields.Count} fields");
+        }
+    }
 }

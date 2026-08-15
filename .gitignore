@@ -39,6 +39,5 @@ desktop/test-out/
 *.sln
 !desktop/Seraphim.sln
 
-quarry/server/data/
-quarry/node_modules/
-quarry/dist/
+# Retired SPA lives outside this repo
+quarry/

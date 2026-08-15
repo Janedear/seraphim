@@ -20,6 +20,6 @@ if ($list -notmatch 'kali-linux') {
   if ($wslOut -match 'restart|reboot|Reboot') { $needReboot = $true }
 }
 Step 4
-wsl.exe -d kali-linux -u root -- bash -lc "export DEBIAN_FRONTEND=noninteractive; apt-get update -y && apt-get install -y kali-tools-top10 nmap sqlmap gobuster hydra nikto"
+wsl.exe -d kali-linux -u root -- bash -lc "export DEBIAN_FRONTEND=noninteractive; apt-get update -y && apt-get install -y kali-linux-core kali-tools-top10 seclists wordlists nmap sqlmap gobuster hydra nikto nuclei rustscan theharvester amass enum4linux smbmap ffuf feroxbuster wpscan dirb john hashcat medusa aircrack-ng wifite searchsploit metasploit-framework bettercap responder tcpdump tshark wireshark binwalk volatility3 radare2 gdb lynis whatweb netexec evil-winrm ncat smbclient httpx-toolkit python3-impacket impacket-scripts"
 if ($needReboot) { Write-Output 'REBOOT' }
 Write-Output 'DONE'
