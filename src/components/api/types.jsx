@@ -1,0 +1,14 @@
+export const MITRE_TACTICS = [
+  'Initial Access',
+  'Execution',
+  'Persistence',
+  'Privilege Escalation',
+  'Defense Evasion',
+  'Credential Access',
+  'Discovery',
+  'Lateral Movement',
+  'Collection',
+  'Command and Control',
+  'Exfiltration',
+  'Impact',
+];

@@ -1,0 +1,38 @@
+<Window x:Class="Seraphim.App.SetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Seraphim Setup"
+        Height="560" Width="720"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#FF05070A">
+    <Grid>
+        <Image Source="pack://application:,,,/Assets/seraphim-hud-blue.png"
+               Stretch="UniformToFill"
+               Opacity="0.35"
+               IsHitTestVisible="False" />
+        <Rectangle IsHitTestVisible="False">
+            <Rectangle.Fill>
+                <RadialGradientBrush Center="0.5,0.5" RadiusX="0.8" RadiusY="0.8">
+                    <GradientStop Color="#00000000" Offset="0.2" />
+                    <GradientStop Color="#CC05070A" Offset="1.0" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Border Width="440" Padding="32" CornerRadius="12"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Background="#E605070A" BorderBrush="#8822D3EE" BorderThickness="1">
+            <StackPanel>
+                <TextBlock Text="SERAPHIM" FontWeight="Bold" FontSize="18" Foreground="#FFE2E8F0"
+                           HorizontalAlignment="Center" />
+                <TextBlock x:Name="Headline" FontSize="22" FontWeight="SemiBold" Foreground="#FFF8FAFC"
+                           HorizontalAlignment="Center" Margin="0,16,0,8" />
+                <TextBlock x:Name="Blurb" FontSize="13" Foreground="#FF94A3B8" TextWrapping="Wrap"
+                           TextAlignment="Center" Margin="0,0,0,20" />
+                <ProgressBar x:Name="Bar" Height="6" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,0,16" />
+                <Button x:Name="ActionBtn" Padding="20,10" HorizontalAlignment="Center" Click="OnAction" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
