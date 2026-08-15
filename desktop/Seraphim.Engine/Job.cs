@@ -14,7 +14,7 @@ public static class Job
         CancellationToken ct = default)
     {
         if (spec.Id == "hibp")
-            return new JobResult(false, "This leak check isn't connected yet. The form is real; nothing left this PC.", "stub");
+            return await RunHibp(values.GetValueOrDefault("prefix", ""), ct);
 
         if (spec.Id == "recon")
             return await RunRecon(values.GetValueOrDefault("target", ""), scope, ct);
@@ -92,6 +92,23 @@ public static class Job
             var entry = await Dns.GetHostEntryAsync(target, ct);
             var lines = entry.AddressList.Select(a => a.ToString());
             return new JobResult(true, $"recon {target}\n{string.Join('\n', lines)}", "ok", Launched: true);
+        }
+        catch (Exception ex)
+        {
+            return new JobResult(false, ex.Message, ex.Message);
+        }
+    }
+
+    private static async Task<JobResult> RunHibp(string prefix, CancellationToken ct)
+    {
+        if (!Hibp.IsPrefix(prefix))
+            return new JobResult(false, "Need the first 5 hex characters of the SHA-1 (k-anonymity). The rest of the hash stays here.", "prefix");
+        try
+        {
+            var body = await Hibp.LookupAsync(prefix, ct: ct);
+            if (string.IsNullOrWhiteSpace(body))
+                return new JobResult(true, $"No rows for {prefix.ToUpperInvariant()}.", "ok", Launched: true);
+            return new JobResult(true, body, "ok", Launched: true);
         }
         catch (Exception ex)
         {

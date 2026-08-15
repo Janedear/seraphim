@@ -31,6 +31,7 @@ public class DemoTreeTests
         Assert.Contains("quarry/", demo);
         Assert.Contains("Do not invent a scan", demo);
         Assert.Contains("Open Seraphim anyway", demo);
+        Assert.Contains("TERMINAL", demo);
         Assert.DoesNotContain("scope refusal", demo);
     }
 

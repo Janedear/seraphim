@@ -110,6 +110,8 @@ public class CatalogTests
     [Fact]
     public void Console_frameworks_need_a_live_terminal()
     {
+        Assert.True(Catalog.ById("kali-shell")!.Interactive);
+        Assert.Equal("bash", Catalog.ById("kali-shell")!.Executable);
         Assert.True(Catalog.ById("msfconsole")!.Interactive);
         Assert.True(Catalog.ById("bettercap")!.Interactive);
         Assert.False(Catalog.ById("nmap")!.Interactive);

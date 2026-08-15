@@ -80,6 +80,14 @@ internal static class KaliCatalog
     private static void AddSpecials(List<ToolSpec> tools)
     {
         tools.Add(new ToolSpec(
+            "kali-shell", "Kali Terminal", "Information Gathering", "bash",
+            "Login shell in kali-linux (WSL). Same prompt you get on Kali.",
+            [
+                new("note", "Leave blank and Run", FieldKind.Text, "", Placeholder: "interactive shell"),
+            ],
+            Prefix: ["-l"]));
+
+        tools.Add(new ToolSpec(
             "nmap", "Nmap", "Information Gathering", "nmap",
             "Finds computers on a network and checks which doors (ports) are open.",
             [

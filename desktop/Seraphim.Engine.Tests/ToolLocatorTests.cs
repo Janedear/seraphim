@@ -6,6 +6,38 @@ namespace Seraphim.Engine.Tests;
 public class ToolLocatorTests
 {
     [Fact]
+    public void Prefers_kali_wsl_over_a_windows_namesake()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "seraphim-locator-" + Guid.NewGuid().ToString("n")[..8]);
+        Directory.CreateDirectory(dir);
+        File.WriteAllText(Path.Combine(dir, "hydra.exe"), "");
+        File.WriteAllText(Path.Combine(dir, "bash.exe"), "");
+        try
+        {
+            var hydra = ToolLocator.Resolve("hydra", ["-l", "admin"], new ToolLocatorOptions
+            {
+                Path = dir,
+                WslReady = true,
+                WslExe = @"C:\Windows\System32\wsl.exe",
+            });
+            Assert.True(hydra.ViaWsl, hydra.How);
+            Assert.Contains("kali-linux", hydra.Arguments);
+
+            var bash = ToolLocator.Resolve("bash", ["-l"], new ToolLocatorOptions
+            {
+                Path = dir,
+                WslReady = true,
+                WslExe = @"C:\Windows\System32\wsl.exe",
+            });
+            Assert.True(bash.ViaWsl, bash.How);
+        }
+        finally
+        {
+            Directory.Delete(dir, true);
+        }
+    }
+
+    [Fact]
     public void Prefers_a_windows_binary_on_path()
     {
         var dir = Path.Combine(Path.GetTempPath(), "seraphim-locator-" + Guid.NewGuid().ToString("n")[..8]);
@@ -72,6 +104,9 @@ public class ToolLocatorTests
         Assert.Contains("Ollama.Ollama", text);
         Assert.Contains("kali-linux", text);
         Assert.Contains("kali-tools-top10", text);
+        Assert.Contains("kali-linux-core", text);
+        Assert.Contains("metasploit-framework", text);
+        Assert.Contains("wordlists", text);
         Assert.Contains("STEP:", text);
         Assert.Contains("DONE", text);
         Assert.Contains("llama3.1:8b", text);

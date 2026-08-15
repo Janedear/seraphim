@@ -39,6 +39,7 @@ public static class Catalog
         "evil-winrm", "wifite",
         "impacket-psexec", "impacket-smbexec", "impacket-wmiexec",
         "set-se", "set-cli",
+        "bash", "kali-shell",
     };
 
     public static IReadOnlyList<ToolSpec> Tools { get; } = StampSides(KaliCatalog.All());

@@ -21,21 +21,28 @@ public static class ToolLocator
     {
         options ??= new ToolLocatorOptions();
         var native = FindNative(executable, options.Path);
+        var wslReady = options.WslReady ?? WslKali.IsReady();
+        var wsl = options.WslExe ?? WslKali.FindWsl();
+
+        if (WindowsFirst(executable) && native is not null)
+            return new ToolLaunch(true, native, args, "Windows", false);
+
+        if (wslReady && !string.IsNullOrEmpty(wsl))
+        {
+            var argv = new List<string> { "-d", options.Distro, "--", executable };
+            argv.AddRange(args);
+            return new ToolLaunch(true, wsl, argv, "Kali", true);
+        }
+
         if (native is not null)
             return new ToolLaunch(true, native, args, "Windows", false);
 
-        var wslReady = options.WslReady ?? WslKali.IsReady();
-        if (!wslReady)
-            return new ToolLaunch(false, "", [], "", false);
-
-        var wsl = options.WslExe ?? WslKali.FindWsl();
-        if (string.IsNullOrEmpty(wsl))
-            return new ToolLaunch(false, "", [], "", false);
-
-        var argv = new List<string> { "-d", options.Distro, "--", executable };
-        argv.AddRange(args);
-        return new ToolLaunch(true, wsl, argv, "Workbench", true);
+        return new ToolLaunch(false, "", [], "", false);
     }
+
+    private static bool WindowsFirst(string executable) =>
+        executable.Equals("nmap", StringComparison.OrdinalIgnoreCase)
+        || executable.Equals("nmap.exe", StringComparison.OrdinalIgnoreCase);
 
     public static string? FindNative(string executable, string? path = null)
     {
@@ -255,7 +262,7 @@ public static class ToolboxSetup
           if ($wslOut -match 'restart|reboot|Reboot') { $needReboot = $true }
         }
         Step 4
-        wsl.exe -d kali-linux -u root -- bash -lc "export DEBIAN_FRONTEND=noninteractive; apt-get update -y && apt-get install -y kali-tools-top10 nmap sqlmap gobuster hydra nikto"
+        wsl.exe -d kali-linux -u root -- bash -lc "export DEBIAN_FRONTEND=noninteractive; apt-get update -y && apt-get install -y kali-linux-core kali-tools-top10 wordlists nmap sqlmap gobuster hydra nikto metasploit-framework"
         if ($needReboot) { Write-Output 'REBOOT' }
         Write-Output 'DONE'
         """;

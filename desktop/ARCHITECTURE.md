@@ -31,7 +31,7 @@ Native Windows workbench. Product code lives in this folder. Retired React proto
 
 ## Run path
 
-`Job` → `ToolLocator` (Windows nmap or `wsl -d kali-linux`) → `ToolRunner` (one-shot) or `PtySession` (ConPTY for interactive consoles like Metasploit). Missing tools say they are not ready. They do not invent a scan.
+`Job` → `ToolLocator` (Windows nmap, otherwise `wsl -d kali-linux`) → `ToolRunner` (one-shot) or `PtySession` (ConPTY for interactive consoles: Kali Terminal, Metasploit, …). Missing tools say they are not ready. They do not invent a scan.
 
 ## Layout on disk
 

@@ -39,6 +39,26 @@ public partial class MainWindow : Window
         Closed += (_, _) => StopLive();
     }
 
+    private async void OnTerminal(object sender, RoutedEventArgs e)
+    {
+        var spec = Catalog.ById("kali-shell");
+        if (spec is null) return;
+        ApplyAgentForm(spec, new Dictionary<string, string>());
+        if (_live is not null)
+        {
+            StopLive();
+            AppendSession("\n[stopped]\n");
+        }
+        var result = await Job.RunAsync(spec, ReadForm(), _scope);
+        if (result.Live is not null)
+        {
+            AttachLive(result);
+            return;
+        }
+        SessionOut.Text = result.Output;
+        ScrollSession();
+    }
+
     private void OnBlue(object sender, RoutedEventArgs e)
     {
         _team = Team.Blue;

@@ -30,4 +30,14 @@ public class JobTests
         Assert.False(string.IsNullOrWhiteSpace(result.Output));
         Assert.DoesNotContain("isn't ready yet", result.Output, StringComparison.OrdinalIgnoreCase);
     }
+
+    [Fact]
+    public async Task Job_hibp_is_not_a_stub()
+    {
+        var spec = Catalog.ById("hibp")!;
+        var result = await Job.RunAsync(spec, new Dictionary<string, string> { ["prefix"] = "nope" }, Lab);
+        Assert.False(result.Ok);
+        Assert.NotEqual("stub", result.Reason);
+        Assert.DoesNotContain("isn't connected yet", result.Output, StringComparison.OrdinalIgnoreCase);
+    }
 }

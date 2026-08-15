@@ -12,6 +12,7 @@ Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, and an on-
 
 - **Catalog** — 771 tools with forms. Blue and Red change start category and chrome. The full Kali menu is always there.
 - **Run** — real processes (Windows nmap or Kali in WSL). We never fake a scan. You pick the target.
+- **Terminal** — caption **TERMINAL** opens a Kali login shell (`wsl -d kali-linux`).
 - **Inside** — local Ollama on `127.0.0.1:11434`. Agents propose forms; you click Run, or auto-run if you left that on.
 - **BYO** — opt-in vendor path with redaction + send preview. Default remains Inside. Vendors still see whatever is in that preview.
 
