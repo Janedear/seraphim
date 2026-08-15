@@ -8,6 +8,14 @@ public class AgentGuardTests
     private static readonly Scope Lab = Scope.Parse("10.0.0.0/8,lab.local");
 
     [Fact]
+    public void System_prompt_does_not_confine_targets_to_a_lab()
+    {
+        var p = AgentGuard.SystemPrompt(AgentRoster.Operator);
+        Assert.DoesNotContain("in-scope lab", p, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("home lab", p, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void Reporter_cannot_fill_a_tool_form()
     {
         var proposal = AgentTurn.Parse("""{"action":"propose","say":"scan it","tool":"nmap","values":{"target":"10.0.0.1"}}""");
@@ -25,7 +33,7 @@ public class AgentGuardTests
     }
 
     [Fact]
-    public void Operator_fills_in_scope_nmap_but_does_not_auto_run()
+    public void Operator_fills_nmap_but_does_not_auto_run()
     {
         var proposal = AgentTurn.Parse("""{"action":"propose","say":"quick look","tool":"nmap","values":{"target":"10.1.2.3","fast":"true"}}""");
         var d = AgentGuard.Review(AgentRoster.Operator, proposal, Lab);
@@ -36,7 +44,7 @@ public class AgentGuardTests
     }
 
     [Fact]
-    public void Operator_in_scope_auto_runs_when_requested()
+    public void Operator_auto_runs_when_requested()
     {
         var proposal = AgentTurn.Parse("""{"action":"propose","say":"quick look","tool":"nmap","values":{"target":"10.1.2.3","fast":"true"}}""");
         var d = AgentGuard.Review(AgentRoster.Operator, proposal, Lab, autoRunInScope: true);
@@ -46,13 +54,14 @@ public class AgentGuardTests
     }
 
     [Fact]
-    public void Out_of_scope_never_auto_runs()
+    public void Operator_can_propose_and_auto_run_a_public_target()
     {
-        var proposal = AgentTurn.Parse("""{"action":"propose","say":"no","tool":"nmap","values":{"target":"8.8.8.8"}}""");
+        var proposal = AgentTurn.Parse("""{"action":"propose","say":"scan it","tool":"nmap","values":{"target":"8.8.8.8","fast":"true"}}""");
         var d = AgentGuard.Review(AgentRoster.Operator, proposal, Lab, autoRunInScope: true);
-        Assert.False(d.ApplyForm);
-        Assert.False(d.AutoRun);
-        Assert.Contains("scope", d.Reason, StringComparison.OrdinalIgnoreCase);
+        Assert.True(d.ApplyForm, d.Reason);
+        Assert.True(d.AutoRun);
+        Assert.Equal("8.8.8.8", d.Values["target"]);
+        Assert.DoesNotContain("scope", d.Reason, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]

@@ -2,7 +2,7 @@
 
 [![engine](https://github.com/Janedear/seraphim/actions/workflows/engine.yml/badge.svg)](https://github.com/Janedear/seraphim/actions/workflows/engine.yml)
 
-Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, scope lock, and an on-device assistant that does not leave this PC by default.
+Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, and an on-device assistant that does not leave this PC by default.
 
 **The product is `desktop/`** — `Seraphim.sln` (WPF app + engine + tests).
 
@@ -11,9 +11,8 @@ Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, scope lock
 ## What it is
 
 - **Catalog** — 771 tools with forms. Blue and Red are different menus, not a skin.
-- **Run** — real processes (Windows nmap or Kali in WSL). We never fake a scan.
-- **Scope** — public internet stays blocked unless you add it.
-- **Inside** — local Ollama on `127.0.0.1:11434`. Agents propose forms; you click Run, or auto-run **in-scope only**.
+- **Run** — real processes (Windows nmap or Kali in WSL). We never fake a scan. You pick the target.
+- **Inside** — local Ollama on `127.0.0.1:11434`. Agents propose forms; you click Run, or auto-run if you left that on.
 - **BYO** — opt-in vendor path with redaction + send preview. Default remains Inside. Vendors still see whatever is in that preview.
 
 Authorized use only. You are responsible for staying inside a written engagement.
@@ -56,7 +55,7 @@ CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: 
 
 | Path | Role |
 |------|------|
-| `desktop/Seraphim.Engine` | Catalog, scope, allowlist, agent guard, job runner |
+| `desktop/Seraphim.Engine` | Catalog, allowlist, agent guard, job runner |
 | `desktop/Seraphim.App` | WPF shell |
 | `desktop/Seraphim.Engine.Tests` | xUnit |
 | `desktop/DEMO.md` | 12-minute investor demo script |

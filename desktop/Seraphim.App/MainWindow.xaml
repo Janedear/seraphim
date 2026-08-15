@@ -53,11 +53,8 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="SERAPHIM" FontWeight="Bold" FontSize="14" Foreground="#FFE2E8F0" />
-                        <TextBlock x:Name="CatalogChip" Text="" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0" />
-                        <TextBlock Text="  Allowed networks" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="12,0,8,0" />
-                        <TextBox x:Name="ScopeBox" Width="280" Padding="6,2" VerticalAlignment="Center" LostFocus="OnScopeCommit" KeyDown="OnScopeKey"
-                                 ToolTip="Networks you're allowed to test. Home Wi-Fi is usually 192.168.0.0/16. Public internet stays blocked." />
-                        <TextBlock x:Name="AiChip" Text="  AI: checking…" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0" />
+                         <TextBlock x:Name="CatalogChip" Text="" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0" />
+                         <TextBlock x:Name="AiChip" Text="  AI: checking…" Foreground="#FF94A3B8" FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0" />
                     </StackPanel>
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="BlueBtn" Content="BLUE" Click="OnBlue" Padding="14,6" Margin="0,0,8,0" />
@@ -175,7 +172,7 @@
                     <PasswordBox x:Name="ByoKey" Grid.Column="4" Width="120" Margin="8,0,0,0" VerticalAlignment="Center"
                                  Visibility="Collapsed" ToolTip="Vendor API key" />
                     <CheckBox x:Name="AttachSession" Grid.Column="5" Content="Attach session" Foreground="#FF94A3B8" VerticalAlignment="Center" Margin="12,0" />
-                    <CheckBox x:Name="AutoRunBox" Grid.Column="6" Content="Auto-run in-scope" Foreground="#FF94A3B8" VerticalAlignment="Center" Margin="8,0" IsChecked="True" />
+                    <CheckBox x:Name="AutoRunBox" Grid.Column="6" Content="Auto-run" Foreground="#FF94A3B8" VerticalAlignment="Center" Margin="8,0" IsChecked="True" />
                     <Button x:Name="SendBtn" Grid.Column="7" Content="Send Inside" Click="OnSend" Padding="16,8" />
                 </Grid>
             </Border>

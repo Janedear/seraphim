@@ -19,7 +19,7 @@ public static class ScopeStore
         {
             // default
         }
-        return Scope.HomeLab;
+        return "";
     }
 
     public static void Save(string raw)

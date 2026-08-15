@@ -22,15 +22,7 @@ public static class ToolRunner
         if (!Allow.Value.Contains(name))
             return new RunPlan(false, executable, arguments, "Executable is not on the allowlist.");
 
-        foreach (var arg in arguments)
-        {
-            var host = ExtractHost(arg);
-            if (host is null) continue;
-            if (!scope.Allows(host))
-                return new RunPlan(false, executable, arguments,
-                    $"'{arg}' isn't on your allowed list (scope: {scope.Raw}). Add that network in Scope, then Run again.");
-        }
-
+        _ = scope;
         return new RunPlan(true, name, arguments, "ok");
     }
 

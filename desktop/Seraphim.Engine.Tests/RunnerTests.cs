@@ -23,11 +23,11 @@ public class RunnerTests
     }
 
     [Fact]
-    public void Rejects_out_of_scope_target()
+    public void Allows_public_internet_targets()
     {
         var r = ToolRunner.Plan("nmap", new[] { "8.8.8.8" }, Scope);
-        Assert.False(r.Allowed);
-        Assert.Contains("scope", r.Reason, StringComparison.OrdinalIgnoreCase);
+        Assert.True(r.Allowed, r.Reason);
+        Assert.DoesNotContain("scope", r.Reason, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -45,21 +45,18 @@ public class RunnerTests
     }
 
     [Fact]
-    public void Url_host_is_checked_against_scope()
+    public void Url_with_a_public_host_is_allowed()
     {
         var r = ToolRunner.Plan("sqlmap", new[] { "-u", "http://8.8.8.8/item?id=1" }, Scope);
-        Assert.False(r.Allowed);
-        Assert.Contains("scope", r.Reason, StringComparison.OrdinalIgnoreCase);
+        Assert.True(r.Allowed, r.Reason);
     }
 
     [Fact]
-    public void Home_lan_is_in_default_scope()
+    public void Open_scope_does_not_block_public_targets()
     {
-        var home = Scope.Parse(Scope.HomeLab);
-        Assert.True(home.Allows("192.168.1.1"));
-        Assert.True(home.Allows("10.0.0.1"));
-        Assert.True(home.Allows("172.16.0.5"));
-        Assert.False(home.Allows("8.8.8.8"));
+        Assert.True(Scope.Open.Allows("8.8.8.8"));
+        Assert.True(Scope.Open.Allows("1.1.1.1"));
+        Assert.True(Scope.Parse("10.0.0.0/8").Allows("8.8.8.8"));
     }
 
     [Fact]

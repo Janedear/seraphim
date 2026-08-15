@@ -27,11 +27,11 @@ public class DemoTreeTests
         var demo = File.ReadAllText(Path.Combine(root, "desktop", "DEMO.md"));
         Assert.Contains("Forensics", demo);
         Assert.Contains("Exploitation Tools", demo);
-        Assert.Contains("8.8.8.8", demo);
         Assert.Contains("127.0.0.1", demo);
         Assert.Contains("quarry/", demo);
         Assert.Contains("Do not invent a scan", demo);
         Assert.Contains("Open Seraphim anyway", demo);
+        Assert.DoesNotContain("scope refusal", demo);
     }
 
     private static string RepoRoot()

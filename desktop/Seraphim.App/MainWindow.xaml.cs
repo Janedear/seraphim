@@ -23,9 +23,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _team = TeamStore.Load();
-        var scopeRaw = ScopeStore.LoadRaw();
-        _scope = Scope.Parse(scopeRaw);
-        ScopeBox.Text = scopeRaw;
+        _scope = Scope.Open;
         AgentPick.ItemsSource = AgentRoster.All;
         AgentPick.SelectedIndex = 0;
         FindingsList.ItemsSource = _findings.All;
@@ -39,24 +37,6 @@ public partial class MainWindow : Window
             AiChip.Text = _insideUp ? SetupCopy.InsideOn : SetupCopy.InsideOff;
         };
         Closed += (_, _) => StopLive();
-    }
-
-    private void OnScopeKey(object sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            e.Handled = true;
-            OnScopeCommit(sender, e);
-        }
-    }
-
-    private void OnScopeCommit(object sender, RoutedEventArgs e)
-    {
-        var raw = ScopeBox.Text.Trim();
-        if (raw.Length == 0) raw = Scope.HomeLab;
-        _scope = Scope.Parse(raw);
-        ScopeBox.Text = _scope.Raw;
-        ScopeStore.Save(_scope.Raw);
     }
 
     private void OnBlue(object sender, RoutedEventArgs e)
@@ -385,7 +365,7 @@ public partial class MainWindow : Window
                 ApplyAgentForm(decision.Tool, decision.Values);
                 if (decision.AutoRun)
                 {
-                    AppendSession("\nRunning in-scope proposal (same path as Run)…");
+                    AppendSession("\nRunning proposal (same path as Run)…");
                     var job = await Job.RunAsync(decision.Tool, decision.Values, _scope);
                     if (job.Live is not null)
                     {

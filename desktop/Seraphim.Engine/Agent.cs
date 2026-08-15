@@ -34,7 +34,7 @@ public static class AgentRoster
 {
     public static readonly AgentPersona Operator = new(
         "operator", "Operator",
-        "Can fill any catalog form. You click Run, or auto-run when the target is in scope.",
+        "Can fill any catalog form. You click Run, or auto-run if that is on.",
         Categories: null,
         MayProposeTools: true);
 
@@ -133,13 +133,7 @@ public static class AgentGuard
         var values = Sanitize(spec, proposal.Values);
         var args = CommandBuilder.Build(spec, values);
 
-        if (spec.BuiltIn)
-        {
-            var target = values.GetValueOrDefault("target") ?? values.GetValueOrDefault("url") ?? "";
-            if (!string.IsNullOrWhiteSpace(target) && !scope.Allows(ExtractHost(target) ?? target))
-                return Chat(proposal.Say, $"Target is outside engagement scope.");
-        }
-        else
+        if (!spec.BuiltIn)
         {
             var plan = ToolRunner.Plan(spec.Executable, args, scope);
             if (!plan.Allowed)
@@ -168,7 +162,7 @@ public static class AgentGuard
             return sb.ToString();
         }
         sb.AppendLine("Prefer these tool ids: " + string.Join(", ", tools));
-        sb.AppendLine("Only propose in-scope lab targets. Never set osShell or extra argv.");
+        sb.AppendLine("Propose the tool the operator asked for. Never set osShell or extra argv.");
         return sb.ToString();
     }
 
@@ -212,11 +206,4 @@ public static class AgentGuard
 
     private static AgentDecision Chat(string say, string reason) =>
         new(false, false, say, reason, null, new Dictionary<string, string>());
-
-    private static string? ExtractHost(string arg)
-    {
-        if (Uri.TryCreate(arg, UriKind.Absolute, out var uri) && uri.Host.Length > 0)
-            return uri.Host;
-        return arg;
-    }
 }

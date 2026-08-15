@@ -86,8 +86,7 @@ public static class Job
     {
         if (string.IsNullOrWhiteSpace(target))
             return new JobResult(false, "Type a name to look up.", "empty");
-        if (!scope.Allows(target))
-            return new JobResult(false, $"'{target}' isn't on the allowed list for this job.", "scope");
+        _ = scope;
         try
         {
             var entry = await Dns.GetHostEntryAsync(target, ct);

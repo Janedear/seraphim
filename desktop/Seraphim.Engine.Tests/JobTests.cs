@@ -8,14 +8,14 @@ public class JobTests
     private static readonly Scope Lab = Scope.Parse("127.0.0.1,10.0.0.0/8,lab.local");
 
     [Fact]
-    public async Task Job_refuses_out_of_scope_before_launch()
+    public void Job_plan_does_not_refuse_a_public_target()
     {
         var spec = Catalog.ById("nmap")!;
         var values = new Dictionary<string, string> { ["target"] = "8.8.8.8", ["fast"] = "true" };
-        var result = await Job.RunAsync(spec, values, Lab);
-        Assert.False(result.Ok);
-        Assert.Contains("scope", result.Reason, StringComparison.OrdinalIgnoreCase);
-        Assert.False(result.Launched);
+        var args = CommandBuilder.Build(spec, values);
+        var plan = ToolRunner.Plan(spec.Executable, args, Lab);
+        Assert.True(plan.Allowed, plan.Reason);
+        Assert.DoesNotContain("scope", plan.Reason, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]

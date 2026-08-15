@@ -21,17 +21,16 @@ Native Windows workbench. Kali-class catalog, better operator UX. Blue and Red a
 Blue: Forensics (Volatility, etc.). No Exploitation. Chip ~425 tools.  
 Toggle Red: Exploitation Tools. No Forensics. Chip ~640 tools.
 
-**Minute 4–6 — Scope lock**  
-Information Gathering → nmap. Target `8.8.8.8`. Run.  
-Expect a scope refusal. Nothing left this PC. Add nothing to Scope.
-
-**Minute 6–8 — Real scan**  
-Target `127.0.0.1`. Quick preset. Run.  
+**Minute 4–6 — Real scan**  
+Information Gathering → nmap. Target whatever the engagement is (localhost is fine for a dry run). Quick preset. Run.  
 Real output, or the honest “isn’t ready yet” / built-in TCP rows. Never theater.
+
+**Minute 6–8 — Same path, another target**  
+Change the target. Run again. No “allowed networks” prompt. You are the operator.
 
 **Minute 8–11 — Inside**  
 Prompt: `quick look at 127.0.0.1`. Send Inside.  
-Working… then a proposal. Form fills. Auto-run only if in scope. Same path as Run.
+Working… then a proposal. Form fills. Auto-run uses the same path as Run.
 
 **Minute 11–12 — What you will not do**  
 Do not open `quarry/`. Do not lead with BYO. Do not claim a signed installer. SmartScreen may warn; we do not fake a signature.
