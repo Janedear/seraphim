@@ -28,6 +28,9 @@ public static class Job
         }
 
         var launch = ToolLocator.Resolve(spec.Executable, args);
+        if (!launch.Found && spec.Interactive)
+            return new JobResult(false, string.Format(SetupCopy.MissingTool, spec.Name), "missing");
+
         if (!launch.Found && spec.Id == "nmap")
         {
             var target = values.GetValueOrDefault("target", "");

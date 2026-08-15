@@ -1,5 +1,7 @@
 # Seraphim
 
+[![engine](https://github.com/Janedear/seraphim/actions/workflows/engine.yml/badge.svg)](https://github.com/Janedear/seraphim/actions/workflows/engine.yml)
+
 Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, scope lock, and an on-device assistant that does not leave this PC by default.
 
 **The product is `desktop/`** — `Seraphim.sln` (WPF app + engine + tests).
@@ -48,7 +50,7 @@ That copies the workbench to `%LocalAppData%\Programs\Seraphim` and adds Start M
 
 The zip and exe are **unsigned**. SmartScreen may warn. We do not fake a signature.
 
-CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: `desktop/ARCHITECTURE.md`.
+CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: `desktop/ARCHITECTURE.md`. Demo: `desktop/DEMO.md`.
 
 ## Layout
 
@@ -57,6 +59,7 @@ CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: 
 | `desktop/Seraphim.Engine` | Catalog, scope, allowlist, agent guard, job runner |
 | `desktop/Seraphim.App` | WPF shell |
 | `desktop/Seraphim.Engine.Tests` | xUnit |
+| `desktop/DEMO.md` | 12-minute investor demo script |
 | `quarry/` | Retired React prototype. Not the product. |
 
 ## Tests

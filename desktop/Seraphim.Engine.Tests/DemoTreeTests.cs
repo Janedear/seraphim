@@ -17,6 +17,20 @@ public class DemoTreeTests
         Assert.False(File.Exists(Path.Combine(root, "vite.config.js")));
         Assert.True(Directory.Exists(Path.Combine(root, "quarry")));
         Assert.True(File.Exists(Path.Combine(root, "quarry", "README.md")));
+        Assert.True(File.Exists(Path.Combine(root, "desktop", "DEMO.md")));
+    }
+
+    [Fact]
+    public void Demo_script_covers_the_meeting()
+    {
+        var root = RepoRoot();
+        var demo = File.ReadAllText(Path.Combine(root, "desktop", "DEMO.md"));
+        Assert.Contains("Forensics", demo);
+        Assert.Contains("Exploitation Tools", demo);
+        Assert.Contains("8.8.8.8", demo);
+        Assert.Contains("127.0.0.1", demo);
+        Assert.Contains("quarry/", demo);
+        Assert.Contains("Do not invent a scan", demo);
     }
 
     private static string RepoRoot()

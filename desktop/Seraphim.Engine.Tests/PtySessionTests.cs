@@ -41,6 +41,8 @@ public class JobLiveTests
         sw.Stop();
         try
         {
+            if (result.Reason == "missing")
+                return;
             Assert.True(result.Ok, result.Reason + "\n" + result.Output);
             Assert.NotNull(result.Live);
             Assert.True(sw.Elapsed < TimeSpan.FromSeconds(2), $"waited {sw.Elapsed}; live jobs must return immediately");
@@ -49,5 +51,22 @@ public class JobLiveTests
         {
             result.Live?.Dispose();
         }
+    }
+
+    [Fact]
+    public async Task Interactive_missing_tool_does_not_fake_a_connect_scan()
+    {
+        var spec = Catalog.ById("msfconsole")!;
+        Assert.True(spec.Interactive);
+        var result = await Job.RunAsync(spec, new Dictionary<string, string>(), Lab);
+        if (result.Live is not null)
+        {
+            result.Live.Dispose();
+            return;
+        }
+        Assert.False(result.Ok);
+        Assert.Equal("missing", result.Reason);
+        Assert.Null(result.Live);
+        Assert.DoesNotContain("built-in TCP", result.Output, StringComparison.OrdinalIgnoreCase);
     }
 }
