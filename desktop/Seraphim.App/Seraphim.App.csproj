@@ -8,10 +8,14 @@
     <RootNamespace>Seraphim.App</RootNamespace>
     <ApplicationTitle>Seraphim</ApplicationTitle>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\seraphim.ico</ApplicationIcon>
     <Version>0.1.0</Version>
     <FileVersion>0.1.0.0</FileVersion>
     <Product>Seraphim</Product>
     <Description>Native Windows pentest workbench</Description>
+    <Authors>Seraphim</Authors>
+    <Company>Seraphim</Company>
+    <Copyright>Copyright © 2026</Copyright>
     <PublishSingleFile>false</PublishSingleFile>
   </PropertyGroup>
   <ItemGroup>
@@ -24,6 +28,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Install-Seraphim.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Uninstall-Seraphim.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -12,12 +12,14 @@ public sealed class InsideClient
     public InsideClient(string baseUrl, HttpClient? http = null)
     {
         _base = baseUrl.TrimEnd('/');
-        _http = http ?? new HttpClient { Timeout = TimeSpan.FromSeconds(120) };
+        _http = http ?? new HttpClient { Timeout = TimeSpan.FromSeconds(180) };
     }
 
     private string _model = "";
 
     public string Model => _model;
+
+    public const string PreferredModel = "llama3.1:8b";
 
     public static string? FirstModelName(string tagsJson)
     {
@@ -25,20 +27,33 @@ public sealed class InsideClient
         {
             using var doc = System.Text.Json.JsonDocument.Parse(tagsJson);
             if (!doc.RootElement.TryGetProperty("models", out var models)) return null;
+            var names = new List<string>();
             foreach (var m in models.EnumerateArray())
             {
                 if (m.TryGetProperty("name", out var name))
                 {
                     var s = name.GetString();
-                    if (!string.IsNullOrWhiteSpace(s)) return s;
+                    if (!string.IsNullOrWhiteSpace(s)) names.Add(s);
                 }
             }
+            return Prefer(names);
         }
         catch (System.Text.Json.JsonException)
         {
             return null;
         }
-        return null;
+    }
+
+    public static string? Prefer(IReadOnlyList<string> names)
+    {
+        if (names.Count == 0) return null;
+        string? Hit(Func<string, bool> pred) => names.FirstOrDefault(pred);
+        return Hit(n => n.Equals(PreferredModel, StringComparison.OrdinalIgnoreCase))
+               ?? Hit(n => n.Contains("8b", StringComparison.OrdinalIgnoreCase)
+                           || n.Contains("7b", StringComparison.OrdinalIgnoreCase))
+               ?? Hit(n => n.Contains("3b", StringComparison.OrdinalIgnoreCase))
+               ?? Hit(n => !n.Contains("1b", StringComparison.OrdinalIgnoreCase))
+               ?? names[0];
     }
 
     public async Task<string> CompleteAsync(string userText, string? session = null, string? system = null, CancellationToken ct = default)

@@ -4,7 +4,7 @@ Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, scope lock
 
 **The product is `desktop/`** — `Seraphim.sln` (WPF app + engine + tests).
 
-`src/`, `server/`, and `functions/` are a retired React prototype. Do not demo them. Do not evolve them.
+`quarry/` is a retired React prototype. Do not demo it. Do not evolve it.
 
 ## What it is
 
@@ -21,7 +21,7 @@ Authorized use only. You are responsible for staying inside a written engagement
 - Windows 10/11
 - .NET 8 SDK (user-local install is fine: `%LOCALAPPDATA%\Microsoft\dotnet`)
 - For real tool launches: Windows nmap and/or WSL distro `kali-linux`
-- For Inside: Ollama with at least one local model
+- For Inside: a local 8B-class model (`llama3.1:8b`). Setup pulls that; Inside prefers it over any leftover 1B smoke model.
 
 ## Build and run
 
@@ -34,7 +34,21 @@ dotnet publish Seraphim.App\Seraphim.App.csproj -c Release -r win-x64 --self-con
 .\dist\Seraphim.App.exe
 ```
 
-First launch may show **Seraphim Setup**. That is the product installer, not a separate “Kali/Ollama” wizard.
+First launch asks for authorized use (written permission), then may show **Seraphim Setup**.
+
+## Install (this PC)
+
+```powershell
+cd desktop
+.\Pack-Seraphim.ps1
+.\dist\Install-Seraphim.ps1
+```
+
+That copies the workbench to `%LocalAppData%\Programs\Seraphim` and adds Start Menu + Desktop shortcuts. Uninstall: `.\dist\Uninstall-Seraphim.ps1` (or the copy under Programs\Seraphim).
+
+The zip and exe are **unsigned**. SmartScreen may warn. We do not fake a signature.
+
+CI: `.github/workflows/engine.yml` runs `dotnet test` on Windows. Architecture: `desktop/ARCHITECTURE.md`.
 
 ## Layout
 
@@ -43,7 +57,7 @@ First launch may show **Seraphim Setup**. That is the product installer, not a s
 | `desktop/Seraphim.Engine` | Catalog, scope, allowlist, agent guard, job runner |
 | `desktop/Seraphim.App` | WPF shell |
 | `desktop/Seraphim.Engine.Tests` | xUnit |
-| `src/` | Quarry (old SPA) |
+| `quarry/` | Retired React prototype. Not the product. |
 
 ## Tests
 

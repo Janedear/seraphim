@@ -17,6 +17,7 @@ public partial class MainWindow : Window
     private ToolSpec _tool = Catalog.Tools[0];
     private readonly Dictionary<string, FrameworkElement> _inputs = new();
     private bool _applyingPreset;
+    private PtySession? _live;
 
     public MainWindow()
     {
@@ -25,8 +26,6 @@ public partial class MainWindow : Window
         var scopeRaw = ScopeStore.LoadRaw();
         _scope = Scope.Parse(scopeRaw);
         ScopeBox.Text = scopeRaw;
-        Categories.ItemsSource = Catalog.CategoriesFor(_team);
-        Categories.SelectedIndex = 0;
         AgentPick.ItemsSource = AgentRoster.All;
         AgentPick.SelectedIndex = 0;
         FindingsList.ItemsSource = _findings.All;
@@ -39,6 +38,7 @@ public partial class MainWindow : Window
             _insideUp = await _inside.EnsureAsync();
             AiChip.Text = _insideUp ? SetupCopy.InsideOn : SetupCopy.InsideOff;
         };
+        Closed += (_, _) => StopLive();
     }
 
     private void OnScopeKey(object sender, KeyEventArgs e)
@@ -223,9 +223,22 @@ public partial class MainWindow : Window
 
     private async void OnRun(object sender, RoutedEventArgs e)
     {
+        if (_live is not null)
+        {
+            StopLive();
+            AppendSession("\n[stopped]\n");
+            return;
+        }
+
         var result = await Job.RunAsync(_tool, ReadForm(), _scope);
+        if (result.Live is not null)
+        {
+            AttachLive(result);
+            return;
+        }
+
         SessionOut.Text = result.Output;
-        SessionScroll?.ScrollToEnd();
+        ScrollSession();
     }
 
     private void OnSaveFinding(object sender, RoutedEventArgs e)
@@ -261,7 +274,74 @@ public partial class MainWindow : Window
     private void AppendSession(string text)
     {
         SessionOut.Text += text;
-        SessionScroll?.ScrollToEnd();
+        ScrollSession();
+    }
+
+    private void ScrollSession()
+    {
+        SessionOut.CaretIndex = SessionOut.Text.Length;
+        SessionOut.ScrollToEnd();
+    }
+
+    private void AttachLive(JobResult result)
+    {
+        StopLive();
+        _live = result.Live;
+        RunBtn.Content = "Stop";
+        SessionOut.IsReadOnly = false;
+        SessionOut.Text = result.Output + "\n";
+        if (_live is null) return;
+        _live.Output += OnPtyOutput;
+        SessionOut.Focus();
+        ScrollSession();
+    }
+
+    private void OnPtyOutput(string chunk)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            SessionOut.AppendText(chunk);
+            ScrollSession();
+        });
+    }
+
+    private void StopLive()
+    {
+        if (_live is null) return;
+        _live.Output -= OnPtyOutput;
+        _live.Dispose();
+        _live = null;
+        RunBtn.Content = "Run";
+        SessionOut.IsReadOnly = true;
+    }
+
+    private void OnSessionText(object sender, TextCompositionEventArgs e)
+    {
+        if (_live is null) return;
+        _live.Write(e.Text);
+        e.Handled = true;
+    }
+
+    private void OnSessionKey(object sender, KeyEventArgs e)
+    {
+        if (_live is null) return;
+        var seq = e.Key switch
+        {
+            Key.Return => "\r",
+            Key.Back => "\b",
+            Key.Tab => "\t",
+            Key.Escape => "\u001b",
+            Key.Up => "\u001b[A",
+            Key.Down => "\u001b[B",
+            Key.Right => "\u001b[C",
+            Key.Left => "\u001b[D",
+            Key.C when Keyboard.Modifiers == ModifierKeys.Control => "\u0003",
+            Key.D when Keyboard.Modifiers == ModifierKeys.Control => "\u0004",
+            _ => null,
+        };
+        if (seq is null) return;
+        _live.Write(seq);
+        e.Handled = true;
     }
 
     private async Task SendInside()
@@ -307,14 +387,21 @@ public partial class MainWindow : Window
                 {
                     AppendSession("\nRunning in-scope proposal (same path as Run)…");
                     var job = await Job.RunAsync(decision.Tool, decision.Values, _scope);
-                    AppendSession("\n" + job.Output);
-                    if (job.Ok)
+                    if (job.Live is not null)
                     {
-                        var hint = decision.Values.GetValueOrDefault("target") ?? decision.Values.GetValueOrDefault("url") ?? "";
-                        var row = _findings.Add($"{decision.Tool.Name} {hint}".Trim(), job.Output);
-                        FindingsList.ItemsSource = null;
-                        FindingsList.ItemsSource = _findings.All;
-                        FindingsList.SelectedItem = row;
+                        AttachLive(job);
+                    }
+                    else
+                    {
+                        AppendSession("\n" + job.Output);
+                        if (job.Ok)
+                        {
+                            var hint = decision.Values.GetValueOrDefault("target") ?? decision.Values.GetValueOrDefault("url") ?? "";
+                            var row = _findings.Add($"{decision.Tool.Name} {hint}".Trim(), job.Output);
+                            FindingsList.ItemsSource = null;
+                            FindingsList.ItemsSource = _findings.All;
+                            FindingsList.SelectedItem = row;
+                        }
                     }
                 }
                 else
@@ -441,9 +528,9 @@ public partial class MainWindow : Window
         if (WorkLabel is not null)
             WorkLabel.Text = _team == Team.Red ? "RED WORK" : "BLUE WORK";
         var cats = Catalog.CategoriesFor(_team);
-        var keepCat = Categories.SelectedItem as string;
         Categories.ItemsSource = cats;
-        var idx = keepCat is not null ? cats.ToList().IndexOf(keepCat) : 0;
+        var home = Catalog.HomeCategory(_team);
+        var idx = cats.ToList().IndexOf(home);
         Categories.SelectedIndex = idx >= 0 ? idx : 0;
         ApplyToolFilter();
         FadeHud();

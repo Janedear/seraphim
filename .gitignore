@@ -21,6 +21,7 @@ dist-ssr
 desktop/**/bin/
 desktop/**/obj/
 desktop/dist/
+desktop/pack/
 desktop/test-out/
 
 # Editor
@@ -38,4 +39,6 @@ desktop/test-out/
 *.sln
 !desktop/Seraphim.sln
 
-server/data/
+quarry/server/data/
+quarry/node_modules/
+quarry/dist/

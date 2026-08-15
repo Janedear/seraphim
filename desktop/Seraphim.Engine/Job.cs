@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Seraphim.Engine;
 
-public sealed record JobResult(bool Ok, string Output, string Reason, bool Launched = false);
+public sealed record JobResult(bool Ok, string Output, string Reason, bool Launched = false, PtySession? Live = null);
 
 public static class Job
 {
@@ -37,6 +37,20 @@ public static class Job
 
         if (!launch.Found)
             return new JobResult(false, string.Format(SetupCopy.MissingTool, spec.Name), "missing");
+
+        if (spec.Interactive)
+        {
+            try
+            {
+                var live = PtySession.Start(launch.FileName, launch.Arguments);
+                return new JobResult(true, "Live terminal. Type in the session pane. Stop ends the process.", "live",
+                    Launched: true, Live: live);
+            }
+            catch (Exception ex)
+            {
+                return new JobResult(false, ex.Message, ex.Message);
+            }
+        }
 
         try
         {

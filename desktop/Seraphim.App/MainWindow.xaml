@@ -4,7 +4,8 @@
         Title="Seraphim — Blue"
         Height="800" Width="1280"
         Background="#FF05070A"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="pack://application:,,,/Assets/seraphim-hud-blue.png">
     <Grid>
         <Image x:Name="HudBlue"
                Source="pack://application:,,,/Assets/seraphim-hud-blue.png"
@@ -127,10 +128,12 @@
                     </DockPanel>
                 </Border>
                 <Border Grid.Row="1" CornerRadius="8" BorderThickness="1" BorderBrush="#FF1E293B" Background="#B3000000" Padding="12">
-                    <ScrollViewer x:Name="SessionScroll">
-                        <TextBlock x:Name="SessionOut" FontFamily="Consolas" FontSize="13" Foreground="#FFCBD5E1" TextWrapping="Wrap"
-                                   Text="Pick a type of work on the left, then a tool. Fill in the form in plain language and click Run. If the program isn't installed, we'll say so — we never fake a result." />
-                    </ScrollViewer>
+                    <TextBox x:Name="SessionOut" FontFamily="Consolas" FontSize="13" Foreground="#FFCBD5E1"
+                             Background="Transparent" BorderThickness="0" TextWrapping="Wrap"
+                             AcceptsReturn="True" IsReadOnly="True" CaretBrush="#FFE2E8F0"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                             PreviewTextInput="OnSessionText" PreviewKeyDown="OnSessionKey"
+                             Text="Pick a type of work on the left, then a tool. Fill in the form in plain language and click Run. If the program isn't installed, we'll say so — we never fake a result." />
                 </Border>
             </Grid>
 

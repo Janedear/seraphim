@@ -35,4 +35,21 @@ public class LanguageModelTests
         var name = InsideClient.FirstModelName("""{"models":[{"name":"llama3.2:1b"}]}""");
         Assert.Equal("llama3.2:1b", name);
     }
+
+    [Fact]
+    public void Larger_local_model_wins_over_smoke_test_1b()
+    {
+        var name = InsideClient.FirstModelName(
+            """{"models":[{"name":"llama3.2:1b"},{"name":"llama3.1:8b"}]}""");
+        Assert.Equal("llama3.1:8b", name);
+        Assert.Equal("llama3.2:3b", InsideClient.FirstModelName(
+            """{"models":[{"name":"llama3.2:1b"},{"name":"llama3.2:3b"}]}"""));
+    }
+
+    [Fact]
+    public void Preferred_inside_model_is_eight_billion_class()
+    {
+        Assert.Contains("8b", InsideClient.PreferredModel, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("1b", InsideClient.PreferredModel, StringComparison.OrdinalIgnoreCase);
+    }
 }

@@ -34,5 +34,7 @@ public static class SetupCopy
         WindowTitle, Headline, Blurb, Action, Installing, Preparing, Lab, Finishing,
         Done, Open, RebootHint, Permission, Failed, MissingTool, ScanFallback,
         InsideOff, InsideOn, InsideDown,
+        AuthorizedUse.Headline, AuthorizedUse.Terms, AuthorizedUse.Check,
+        AuthorizedUse.Continue, AuthorizedUse.Decline,
     ];
 }

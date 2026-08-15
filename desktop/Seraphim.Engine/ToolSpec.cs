@@ -32,7 +32,8 @@ public sealed record ToolSpec(
     IReadOnlyList<ToolPreset>? Presets = null,
     IReadOnlyList<string>? Prefix = null,
     bool BuiltIn = false,
-    TeamSide Side = TeamSide.Both)
+    TeamSide Side = TeamSide.Both,
+    bool Interactive = false)
 {
     public IReadOnlyList<string> PresetNames =>
         Presets is { Count: > 0 } ? Presets.Select(p => p.Name).ToArray() : [];

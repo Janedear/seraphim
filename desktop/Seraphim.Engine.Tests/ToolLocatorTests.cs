@@ -74,6 +74,7 @@ public class ToolLocatorTests
         Assert.Contains("kali-tools-top10", text);
         Assert.Contains("STEP:", text);
         Assert.Contains("DONE", text);
-        Assert.Equal("Setup-Seraphim.ps1", ToolboxSetup.ScriptFileName);
+        Assert.Contains("llama3.1:8b", text);
+        Assert.DoesNotContain("llama3.2:1b", text);
     }
 }

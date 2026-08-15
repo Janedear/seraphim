@@ -30,10 +30,24 @@ public static class Catalog
         "bettercap", "ettercap", "responder", "mitmproxy", "dsniff",
     };
 
+    private static readonly HashSet<string> Tty = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "msfconsole", "bettercap", "ettercap", "responder", "setoolkit",
+        "nc", "ncat", "netcat", "telnet", "ftp", "smbclient",
+        "gdb", "gdb-peda", "gef", "radare2", "r2",
+        "mysql", "psql", "redis-cli",
+        "evil-winrm", "wifite",
+        "impacket-psexec", "impacket-smbexec", "impacket-wmiexec",
+        "set-se", "set-cli",
+    };
+
     public static IReadOnlyList<ToolSpec> Tools { get; } = StampSides(KaliCatalog.All());
 
     public static IReadOnlyList<string> CategoriesFor(Team team) =>
         Categories.Where(c => ToolsIn(c, team).Count > 0).ToArray();
+
+    public static string HomeCategory(Team team) =>
+        team == Team.Red ? "Exploitation Tools" : "Forensics";
 
     public static IReadOnlyList<ToolSpec> ToolsFor(Team team) =>
         Tools.Where(t => VisibleTo(t, team)).ToArray();
@@ -67,6 +81,13 @@ public static class Catalog
         };
     }
 
+    public static bool NeedsTty(string id, string executable) =>
+        Tty.Contains(id) || Tty.Contains(executable);
+
     private static IReadOnlyList<ToolSpec> StampSides(IReadOnlyList<ToolSpec> tools) =>
-        tools.Select(t => t with { Side = SideFor(t.Category, t.Id) }).ToArray();
+        tools.Select(t => t with
+        {
+            Side = SideFor(t.Category, t.Id),
+            Interactive = NeedsTty(t.Id, t.Executable),
+        }).ToArray();
 }

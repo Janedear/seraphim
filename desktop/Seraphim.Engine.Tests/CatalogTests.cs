@@ -103,4 +103,23 @@ public class CatalogTests
         Assert.Contains(Catalog.ToolsIn("Password Attacks", Team.Red), t => t.Id == "hydra");
         Assert.Contains(Catalog.ToolsIn("Information Gathering", Team.Blue), t => t.Id == "nmap");
     }
+
+    [Fact]
+    public void Home_category_is_forensics_for_blue_and_exploitation_for_red()
+    {
+        Assert.Equal("Forensics", Catalog.HomeCategory(Team.Blue));
+        Assert.Equal("Exploitation Tools", Catalog.HomeCategory(Team.Red));
+        Assert.Contains(Catalog.CategoriesFor(Team.Blue), c => c == Catalog.HomeCategory(Team.Blue));
+        Assert.Contains(Catalog.CategoriesFor(Team.Red), c => c == Catalog.HomeCategory(Team.Red));
+        Assert.NotEqual(Catalog.HomeCategory(Team.Blue), Catalog.HomeCategory(Team.Red));
+    }
+
+    [Fact]
+    public void Console_frameworks_need_a_live_terminal()
+    {
+        Assert.True(Catalog.ById("msfconsole")!.Interactive);
+        Assert.True(Catalog.ById("bettercap")!.Interactive);
+        Assert.False(Catalog.ById("nmap")!.Interactive);
+        Assert.False(Catalog.ById("sqlmap")!.Interactive);
+    }
 }

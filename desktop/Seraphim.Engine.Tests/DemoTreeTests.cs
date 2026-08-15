@@ -1,0 +1,33 @@
+using Xunit;
+
+namespace Seraphim.Engine.Tests;
+
+public class DemoTreeTests
+{
+    [Fact]
+    public void Retired_spa_is_not_at_the_repo_root()
+    {
+        var root = RepoRoot();
+        Assert.True(Directory.Exists(Path.Combine(root, "desktop")));
+        Assert.True(File.Exists(Path.Combine(root, "desktop", "Seraphim.sln")));
+        Assert.False(Directory.Exists(Path.Combine(root, "src")), "retired SPA still at src/");
+        Assert.False(Directory.Exists(Path.Combine(root, "server")), "retired server still at root");
+        Assert.False(Directory.Exists(Path.Combine(root, "functions")), "retired functions still at root");
+        Assert.False(File.Exists(Path.Combine(root, "package.json")), "Vite package.json still at root");
+        Assert.False(File.Exists(Path.Combine(root, "vite.config.js")));
+        Assert.True(Directory.Exists(Path.Combine(root, "quarry")));
+        Assert.True(File.Exists(Path.Combine(root, "quarry", "README.md")));
+    }
+
+    private static string RepoRoot()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir is not null)
+        {
+            if (File.Exists(Path.Combine(dir.FullName, "desktop", "Seraphim.sln")))
+                return dir.FullName;
+            dir = dir.Parent;
+        }
+        throw new DirectoryNotFoundException("Could not find repo root from " + AppContext.BaseDirectory);
+    }
+}

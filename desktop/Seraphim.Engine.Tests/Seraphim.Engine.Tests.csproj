@@ -12,5 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Seraphim.Engine\Seraphim.Engine.csproj" />
+    <Content Include="..\Seraphim.App\Install-Seraphim.ps1" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\Seraphim.App\Uninstall-Seraphim.ps1" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\Pack-Seraphim.ps1" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

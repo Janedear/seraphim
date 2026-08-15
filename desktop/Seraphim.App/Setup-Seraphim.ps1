@@ -10,7 +10,7 @@ $ollama = Join-Path $env:LOCALAPPDATA 'Programs\Ollama\ollama.exe'
 if (Test-Path $ollama) {
   Start-Process -FilePath $ollama -ArgumentList 'serve' -WindowStyle Hidden -ErrorAction SilentlyContinue
   Start-Sleep -Seconds 2
-  & $ollama pull llama3.2:1b
+  & $ollama pull llama3.1:8b
 }
 Step 3
 $needReboot = $false
