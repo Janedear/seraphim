@@ -11,16 +11,6 @@ public partial class App : Application
         base.OnStartup(e);
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-        if (!AuthorizedUse.IsAccepted())
-        {
-            var gate = new LicenseWindow();
-            if (gate.ShowDialog() != true)
-            {
-                Shutdown();
-                return;
-            }
-        }
-
         var setup = e.Args.Any(a => a.Equals("--setup", StringComparison.OrdinalIgnoreCase));
         Window window = setup || ToolboxSetup.NeedsUi()
             ? new SetupWindow(autoStart: setup)

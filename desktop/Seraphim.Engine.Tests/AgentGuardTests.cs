@@ -83,11 +83,12 @@ public class AgentGuardTests
     }
 
     [Fact]
-    public void Blue_team_cannot_fill_a_red_only_tool()
+    public void Operator_on_blue_can_still_fill_hydra()
     {
         var proposal = AgentTurn.Parse("""{"action":"propose","say":"spray","tool":"hydra","values":{"target":"ssh://10.0.0.1"}}""");
         var d = AgentGuard.Review(AgentRoster.Operator, proposal, Lab, Team.Blue);
-        Assert.False(d.ApplyForm);
+        Assert.True(d.ApplyForm, d.Reason);
+        Assert.Equal("hydra", d.Tool!.Id);
     }
 
     [Fact]

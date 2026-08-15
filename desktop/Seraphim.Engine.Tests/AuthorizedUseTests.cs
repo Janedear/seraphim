@@ -40,7 +40,7 @@ public class AuthorizedUseTests
         var lower = AuthorizedUse.Terms.ToLowerInvariant();
         Assert.Contains("authorized", lower);
         Assert.Contains("written permission", lower);
-        Assert.Contains("declining closes", lower);
+        Assert.DoesNotContain("declining closes", lower);
         foreach (var word in new[] { "kali", "ollama", "nmap", "wsl", "winget", "hydra", "nikto" })
             Assert.DoesNotContain(word, lower);
     }

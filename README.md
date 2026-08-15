@@ -10,7 +10,7 @@ Native Windows pentest workbench. Kali-class catalog, Blue/Red menus, and an on-
 
 ## What it is
 
-- **Catalog** — 771 tools with forms. Blue and Red are different menus, not a skin.
+- **Catalog** — 771 tools with forms. Blue and Red change start category and chrome. The full Kali menu is always there.
 - **Run** — real processes (Windows nmap or Kali in WSL). We never fake a scan. You pick the target.
 - **Inside** — local Ollama on `127.0.0.1:11434`. Agents propose forms; you click Run, or auto-run if you left that on.
 - **BYO** — opt-in vendor path with redaction + send preview. Default remains Inside. Vendors still see whatever is in that preview.
@@ -35,7 +35,7 @@ dotnet publish Seraphim.App\Seraphim.App.csproj -c Release -r win-x64 --self-con
 .\dist\Seraphim.App.exe
 ```
 
-First launch asks for authorized use (written permission), then may show **Seraphim Setup**.
+First launch may show **Seraphim Setup**. There is no license kill-switch.
 
 ## Install (this PC)
 

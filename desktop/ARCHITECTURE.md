@@ -7,7 +7,7 @@ Native Windows workbench. Product code lives in this folder. Retired React proto
 | Piece | Role |
 |-------|------|
 | `Seraphim.Engine` | Catalog, allowlist, job runner, Inside/BYO, findings, agent guard |
-| `Seraphim.App` | WPF shell: Blue/Red, forms, session, setup, authorized-use gate |
+| `Seraphim.App` | WPF shell: Blue/Red chrome, forms, session, setup |
 | `Seraphim.Engine.Tests` | xUnit. Engine tests must stay green. |
 
 ## Operator loop
@@ -25,8 +25,8 @@ Native Windows workbench. Product code lives in this folder. Retired React proto
 
 - **Targets** — the operator's. This is Kali for Windows, not a home-lab sandbox.
 - **Allowlist** — only known binaries (nmap, WSL Kali tools, etc.). No `cmd.exe` for the model.
-- **Team** — Blue and Red are different catalogs, not a theme. Blue home category is Forensics; Red is Exploitation Tools.
-- **Authorized use** — first launch requires a written-permission checkbox. Decline exits.
+- **Team** — Blue and Red change chrome and the start category (Forensics vs Exploitation). They do not hide tools.
+- **Authorized use** — you are responsible. The app does not refuse to open.
 - **No first-party C2 or implants.**
 
 ## Run path

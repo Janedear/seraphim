@@ -7,8 +7,8 @@ Authorized use only. Demo on this PC or a lab you have written permission to tes
 ## Before they sit down
 
 1. Publish once: `desktop\Pack-Seraphim.ps1` then `.\dist\Seraphim.App.exe`.
-2. Accept authorized use if asked. If Setup asks for Windows permission and you decline, click **Open Seraphim anyway**.
-3. Confirm Blue lands on **Forensics**, Red on **Exploitation Tools**.
+2. If Setup asks for Windows permission and you decline, click **Open Seraphim anyway**.
+3. Confirm Blue lands on **Forensics**, Red on **Exploitation Tools**. Exploitation is still in the Blue list.
 4. Confirm the AI chip: `AI: Inside · nothing leaves`.
 5. Confirm nmap (or the built-in TCP check) can run against `127.0.0.1`.
 
@@ -18,8 +18,8 @@ Authorized use only. Demo on this PC or a lab you have written permission to tes
 Native Windows workbench. Kali-class catalog, better operator UX. Blue and Red are different menus, not a skin. Inside stays on this PC.
 
 **Minute 2–4 — Blue vs Red**  
-Blue: Forensics (Volatility, etc.). No Exploitation. Chip ~425 tools.  
-Toggle Red: Exploitation Tools. No Forensics. Chip ~640 tools.
+Blue lands on Forensics. Exploitation is still in the list. Chip is the full catalog.  
+Toggle Red: lands on Exploitation Tools. Forensics is still in the list. Same tools, different start.
 
 **Minute 4–6 — Real scan**  
 Information Gathering → nmap. Target whatever the engagement is (localhost is fine for a dry run). Quick preset. Run.  

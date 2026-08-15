@@ -4,7 +4,7 @@ public static class AuthorizedUse
 {
     public const string Headline = "Authorized use only";
     public const string Terms =
-        "Seraphim runs real scans and attack tooling against whatever you type in. Use it only on authorized systems you own or have written permission to test. You are responsible for staying inside that engagement. Declining closes the app.";
+        "Seraphim runs real scans and attack tooling against whatever you type in. Use it only on authorized systems you own or have written permission to test. You are responsible for staying inside that engagement.";
     public const string Check = "I will only use this on authorized targets";
     public const string Continue = "Continue";
     public const string Decline = "Decline";

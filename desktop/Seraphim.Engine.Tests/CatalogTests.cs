@@ -59,21 +59,18 @@ public class CatalogTests
     }
 
     [Fact]
-    public void Blue_menu_hides_offensive_only_tools()
+    public void Full_kali_catalog_is_on_both_teams()
     {
-        Assert.DoesNotContain(Catalog.ToolsFor(Team.Blue), t => t.Id == "hydra");
-        Assert.DoesNotContain(Catalog.ToolsFor(Team.Blue), t => t.Id == "msfconsole");
-        Assert.DoesNotContain(Catalog.ToolsFor(Team.Blue), t => t.Id == "sqlmap");
-        Assert.DoesNotContain(Catalog.CategoriesFor(Team.Blue), c => c == "Exploitation Tools");
-        Assert.DoesNotContain(Catalog.CategoriesFor(Team.Blue), c => c == "Password Attacks");
-    }
-
-    [Fact]
-    public void Red_menu_hides_forensics_dashboard()
-    {
-        Assert.DoesNotContain(Catalog.ToolsFor(Team.Red), t => t.Id == "volatility3");
-        Assert.DoesNotContain(Catalog.CategoriesFor(Team.Red), c => c == "Forensics");
-        Assert.DoesNotContain(Catalog.CategoriesFor(Team.Red), c => c == "Reporting Tools");
+        foreach (var id in new[] { "hydra", "msfconsole", "sqlmap", "volatility3", "nmap" })
+        {
+            Assert.Contains(Catalog.ToolsFor(Team.Blue), t => t.Id == id);
+            Assert.Contains(Catalog.ToolsFor(Team.Red), t => t.Id == id);
+        }
+        Assert.Contains(Catalog.CategoriesFor(Team.Blue), c => c == "Exploitation Tools");
+        Assert.Contains(Catalog.CategoriesFor(Team.Blue), c => c == "Password Attacks");
+        Assert.Contains(Catalog.CategoriesFor(Team.Red), c => c == "Forensics");
+        Assert.Equal(Catalog.ToolsFor(Team.Blue).Count, Catalog.Tools.Count);
+        Assert.Equal(Catalog.ToolsFor(Team.Red).Count, Catalog.Tools.Count);
     }
 
     [Fact]
@@ -86,20 +83,16 @@ public class CatalogTests
     }
 
     [Fact]
-    public void Blue_and_red_menus_are_different_sizes()
+    public void Blue_and_red_are_chrome_not_a_lock()
     {
-        var blue = Catalog.ToolsFor(Team.Blue);
-        var red = Catalog.ToolsFor(Team.Red);
-        Assert.NotEqual(blue.Count, red.Count);
-        Assert.NotEqual(Catalog.CategoriesFor(Team.Blue).Count, Catalog.CategoriesFor(Team.Red).Count);
-        Assert.True(blue.Count < Catalog.Tools.Count);
-        Assert.True(red.Count < Catalog.Tools.Count);
+        Assert.Equal(Catalog.ToolsFor(Team.Blue).Count, Catalog.ToolsFor(Team.Red).Count);
+        Assert.Equal(Catalog.CategoriesFor(Team.Blue).Count, Catalog.CategoriesFor(Team.Red).Count);
     }
 
     [Fact]
-    public void ToolsIn_honors_team()
+    public void ToolsIn_does_not_hide_by_team()
     {
-        Assert.Empty(Catalog.ToolsIn("Password Attacks", Team.Blue));
+        Assert.Contains(Catalog.ToolsIn("Password Attacks", Team.Blue), t => t.Id == "hydra");
         Assert.Contains(Catalog.ToolsIn("Password Attacks", Team.Red), t => t.Id == "hydra");
         Assert.Contains(Catalog.ToolsIn("Information Gathering", Team.Blue), t => t.Id == "nmap");
     }

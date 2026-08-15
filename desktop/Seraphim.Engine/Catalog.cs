@@ -49,22 +49,18 @@ public static class Catalog
     public static string HomeCategory(Team team) =>
         team == Team.Red ? "Exploitation Tools" : "Forensics";
 
-    public static IReadOnlyList<ToolSpec> ToolsFor(Team team) =>
-        Tools.Where(t => VisibleTo(t, team)).ToArray();
+    public static IReadOnlyList<ToolSpec> ToolsFor(Team team) => Tools;
 
     public static IReadOnlyList<ToolSpec> ToolsIn(string category) =>
         Tools.Where(t => t.Category == category).ToArray();
 
     public static IReadOnlyList<ToolSpec> ToolsIn(string category, Team team) =>
-        Tools.Where(t => t.Category == category && VisibleTo(t, team)).ToArray();
+        ToolsIn(category);
 
     public static ToolSpec? ById(string id) =>
         Tools.FirstOrDefault(t => t.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
 
-    public static bool VisibleTo(ToolSpec tool, Team team) =>
-        tool.Side == TeamSide.Both
-        || (team == Team.Blue && tool.Side == TeamSide.Blue)
-        || (team == Team.Red && tool.Side == TeamSide.Red);
+    public static bool VisibleTo(ToolSpec tool, Team team) => true;
 
     public static TeamSide SideFor(string category, string id)
     {

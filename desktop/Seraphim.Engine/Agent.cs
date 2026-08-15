@@ -127,9 +127,7 @@ public static class AgentGuard
         if (persona.Categories is { Count: > 0 } && !persona.Categories.Contains(spec.Category))
             return Chat(proposal.Say, $"{persona.Name} cannot use {spec.Name} ({spec.Category}).");
 
-        if (team is Team t && !Catalog.VisibleTo(spec, t))
-            return Chat(proposal.Say, $"{spec.Name} is not on this team's menu.");
-
+        _ = team;
         var values = Sanitize(spec, proposal.Values);
         var args = CommandBuilder.Build(spec, values);
 
